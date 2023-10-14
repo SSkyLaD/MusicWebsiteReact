@@ -1,5 +1,6 @@
-/* eslint-disable react/prop-types */
 import React from "react"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
 export default function PlayListSpace(props){
     const[list,setList] = React.useState(props.musicData);
@@ -47,7 +48,9 @@ export default function PlayListSpace(props){
                     placeholder="Search here..."
                     onChange={searching}
                 ></input>
-                <div className="search-icon"></div>
+                <div className="search-icon">
+                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                </div>
             </div>
             <div className="music-list">
                 {listHTML}

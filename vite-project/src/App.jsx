@@ -8,7 +8,7 @@ import { musicData } from "./material/data"
 export default function App(){
     const [control, setControl] = React.useState({
       musicIndex : 0,
-      play : false
+      play : false //điều khiển autoplay khi next hoặc chọn bài trong list
     });
 
     console.log(control.musicIndex);

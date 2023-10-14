@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faRotateRight, faBackward, faForward, faVolumeXmark, faVolumeHigh, faPause} from '@fortawesome/free-solid-svg-icons'
+import { faPlay,faRepeat , faBackward, faForward, faVolumeHigh, faVolumeXmark, faPause, faShuffle} from '@fortawesome/free-solid-svg-icons'
 import React from "react";
 
 export default function MusicSpace(props) {
@@ -10,7 +10,9 @@ export default function MusicSpace(props) {
         fulltimeInSec : 0,
         isPlayed : false,
         isMuted : false,
-        isLooped : false
+        volume : 50,
+        isLooped : false,
+        isSuffer : false
     })
 
     React.useEffect(() => {
@@ -32,6 +34,8 @@ export default function MusicSpace(props) {
     }
 
     function handleLoadMetadata(event){
+        const song = document.querySelector('.song');
+        song.volume = musicSpace.volume/100;
         const songDurationInSec = event.target.duration;
         setMusicSpace((prev)=>{
             return({...prev,fulltimeInSec : songDurationInSec})
@@ -58,7 +62,7 @@ export default function MusicSpace(props) {
     }
 
     function playMusic(){
-        const song = document.querySelector('.song')
+        const song = document.querySelector('.song');
         if(!musicSpace.isPlayed){
             song.play();
             setMusicSpace((prev)=>{
@@ -71,6 +75,16 @@ export default function MusicSpace(props) {
             })
         }
     }
+
+    function changeVolume(event){
+        const volume = event.target.value;
+        const song = document.querySelector('.song');
+        song.volume = volume/100;
+        setMusicSpace((prev)=>{
+            return({...prev,volume : volume});
+        })
+    }
+
     function mute(){
         const song = document.querySelector('.song');
         song.muted = musicSpace.isMuted ? false : true;
@@ -113,16 +127,34 @@ export default function MusicSpace(props) {
                 <p className="fulltime">{timeConvert(musicSpace.fulltimeInSec)}</p>
             </div>
             <div className="control-button">
+                <div className='volume-change'>
+                    <div className='volume-icon-container'>
+                        <div className='volume-icon' onClick={mute}>
+                            {musicSpace.isMuted ?<FontAwesomeIcon icon={faVolumeXmark} /> : <FontAwesomeIcon className='' icon={faVolumeHigh} /> }
+                        </div>
+                    </div>
+                    <input 
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="1"
+                        onChange={changeVolume}
+                        value={musicSpace.volume}
+                    />
+                    <div className='volume-number-container'>
+                        <div className='volume-number'>{musicSpace.volume}</div>
+                    </div>
+                </div>
                 <div className="loop" onClick={loop}>
-                    {musicSpace.isLooped ? <FontAwesomeIcon icon={faRotateRight} style={{opacity : "0.5"}} /> : <FontAwesomeIcon icon={faRotateRight} />}
+                    {musicSpace.isLooped ? <FontAwesomeIcon icon={faRepeat} style={{opacity : "0.5"}} /> : <FontAwesomeIcon icon={faRepeat} />}
                 </div>
                 <div className="backward" onClick={()=> props.returnIndex(props.musicIndex - 1)}><FontAwesomeIcon icon={faBackward} /></div>
                 <div className="play" onClick={playMusic}>
-                    {musicSpace.isPlayed ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} /> }
+                    {musicSpace.isPlayed ? <FontAwesomeIcon icon={faPause} size='xl' /> : <FontAwesomeIcon icon={faPlay} size='xl' /> }
                 </div>
                 <div className="forward" onClick={()=> props.returnIndex(props.musicIndex + 1)}><FontAwesomeIcon icon={faForward} /></div>
-                <div className="volume"  onClick={mute}>
-                    {musicSpace.isMuted ? <FontAwesomeIcon icon={faVolumeXmark} /> : <FontAwesomeIcon icon={faVolumeHigh} />}   
+                <div className="suffer"  onClick={mute}>
+                    <FontAwesomeIcon icon={faShuffle} />
                 </div>
             </div>           
         </div>

@@ -40,7 +40,12 @@
   align-items: center;
   color: white;
 }
-.control-button div{
+
+.control-button .loop,
+.control-button .backward,
+.control-button .forward,
+.control-button .play,
+.control-button .suffer  {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,24 +59,74 @@
   cursor: pointer;
 }
 
+.control-button .play{
+  height: 65px;
+  width: 65px;
+}
+
 .control-button div:hover{
   opacity: 0.7;
 }
 
-#progress{
-  -webkit-appearance: none;
-  width: 300px;
+.control-button .volume-change{
+  display: flex;
+  align-items: center;
+  position: absolute;
+  width: 278px;
+  height: 65px;
+  right: -100px;
+  top: 230px;
+  transform: rotate(-90deg);
+}
+.control-button .volume-change:hover{
+  opacity: 1;
+}
+
+.control-button .volume-change input{
+  width: 200px;
   height: 5px;
-  background: rgb(255, 0, 0);
   cursor: pointer;
   border-radius: 5px;
 }
-#progress::-moz-range-track{
-  -ms-overflow-style: none;
-  -webkit-appearance: none;
-  box-shadow: none;
-  border: none;
-  background: transparent;
+
+.control-button .volume-change input::-moz-range-progress{
+  background: orangered;
+}
+
+.control-button .volume-change .volume-icon{
+  transform: rotate(90deg);
+}
+
+.control-button .volume-change .volume-number{
+  transform: rotate(90deg);
+  font-size: 1rem;
+  font-weight: bolder;
+}
+.volume-change .volume-number-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+}
+
+.volume-change .volume-icon-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+}
+
+/* Thay đổi thanh slider */
+#progress{
+  width: 300px;
+  height: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+#progress::-moz-range-progress{
+  background: red;
 }
 
 #progress::-webkit-scrollbar {
@@ -81,6 +136,7 @@
   background: transparent;
 }
 
+/* con trỏ di thanh slider */
 #progress::-webkit-slider-thumb{
   -webkit-appearance: none;
   background: red;
@@ -112,7 +168,6 @@
 }
 
 .container .playlist-space{
-
   display: flex;
   flex-direction: column;
   align-items: center;
