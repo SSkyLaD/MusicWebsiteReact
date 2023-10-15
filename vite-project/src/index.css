@@ -2,7 +2,6 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
   font-size: 16px;
 }
 
@@ -10,7 +9,7 @@ body{
   height: 100vh;
   width: 100vw;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   background-image: url('./material/peakpx.jpg'); /* Ảnh background*/
   background-size: cover;

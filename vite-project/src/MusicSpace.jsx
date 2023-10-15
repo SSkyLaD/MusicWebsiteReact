@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay,faRepeat , faBackward, faForward, faVolumeHigh, faVolumeXmark, faPause, faShuffle} from '@fortawesome/free-solid-svg-icons'
+import { faPlay,faRepeat , faBackward, faForward, faVolumeHigh, faVolumeXmark, faPause, faShuffle, faBars} from '@fortawesome/free-solid-svg-icons'
+import {faCircleInfo, faRightFromBracket} from '@fortawesome/free-solid-svg-icons'
 import React from "react";
 
 export default function MusicSpace(props) {
@@ -11,20 +12,21 @@ export default function MusicSpace(props) {
         isPlayed : false,
         isMuted : false,
         volume : 50,
-        isLooped : false,
-        isSuffer : false
+        isLooped : false
     })
 
+    //tắt autoPlay ở lần render đầu tiên
     React.useEffect(() => {
-        if (props.play === true) {
+        if (props.autoPlay === true) {
             const song = document.querySelector('.song');
             song.play();
             setMusicSpace(prev => {
                 return { ...prev, isPlayed: true };
             });
         }
-    }, [directory]);
+    }, [props]);
     
+    //
     function timeConvert(number){
         const minute = Math.floor(number/60);
         const second = Math.floor(number % 60);
@@ -47,7 +49,7 @@ export default function MusicSpace(props) {
         setMusicSpace((prev)=>{
             return({...prev,nowtimeInSec : nowInSec});
         })
-        if(parseInt(musicSpace.nowtimeInSec) === parseInt(musicSpace.fulltimeInSec)){
+        if(parseInt((musicSpace.nowtimeInSec) === parseInt(musicSpace.fulltimeInSec)&&(musicSpace.loop === false))){
             props.returnIndex(props.musicIndex + 1);
         }
     }
@@ -97,13 +99,33 @@ export default function MusicSpace(props) {
     function loop(){
         const song = document.querySelector('.song');
         song.loop = musicSpace.isLooped ? false : true;
+        console.log(song.loop)
         setMusicSpace((prev)=>{
             return({...prev, isLooped : !prev.isLooped})
         })
+
+    }
+    function backAndNext(event){
+        event.target.className === "backward" ? props.returnIndex(props.musicIndex - 1) : props.returnIndex(props.musicIndex + 1);
     }
 
     return (
     <div className="music-space">
+        <div className='dropdown-button'>
+            <div className='button'>
+                <FontAwesomeIcon icon={faBars} size="xl" />
+            </div>
+            <ul className='menu'>
+                <li className='about'>
+                    <FontAwesomeIcon icon={faCircleInfo} />
+                    <p>About</p>
+                </li>
+                <li className='logout'>
+                    <FontAwesomeIcon icon={faRightFromBracket} />
+                    <p>Logout</p>
+                </li>
+            </ul>
+        </div>
         <h2 className="song-name">{name}</h2>
         <p className="artist">{artist}</p>
         <img src={coverimage} alt="Album Cover" className="music-img" />
@@ -130,7 +152,7 @@ export default function MusicSpace(props) {
                 <div className='volume-change'>
                     <div className='volume-icon-container'>
                         <div className='volume-icon' onClick={mute}>
-                            {musicSpace.isMuted ?<FontAwesomeIcon icon={faVolumeXmark} /> : <FontAwesomeIcon className='' icon={faVolumeHigh} /> }
+                            {musicSpace.isMuted ?<FontAwesomeIcon icon={faVolumeXmark} /> : <FontAwesomeIcon className='' icon={faVolumeHigh}  /> }
                         </div>
                     </div>
                     <input 
@@ -148,12 +170,12 @@ export default function MusicSpace(props) {
                 <div className="loop" onClick={loop}>
                     {musicSpace.isLooped ? <FontAwesomeIcon icon={faRepeat} style={{opacity : "0.5"}} /> : <FontAwesomeIcon icon={faRepeat} />}
                 </div>
-                <div className="backward" onClick={()=> props.returnIndex(props.musicIndex - 1)}><FontAwesomeIcon icon={faBackward} /></div>
+                <div className="backward" onClick={backAndNext}><FontAwesomeIcon icon={faBackward} /></div>
                 <div className="play" onClick={playMusic}>
                     {musicSpace.isPlayed ? <FontAwesomeIcon icon={faPause} size='xl' /> : <FontAwesomeIcon icon={faPlay} size='xl' /> }
                 </div>
-                <div className="forward" onClick={()=> props.returnIndex(props.musicIndex + 1)}><FontAwesomeIcon icon={faForward} /></div>
-                <div className="suffer"  onClick={mute}>
+                <div className="forward" onClick={backAndNext}><FontAwesomeIcon icon={faForward} /></div>
+                <div className="suffer" onClick={props.suffer}>
                     <FontAwesomeIcon icon={faShuffle} />
                 </div>
             </div>           
