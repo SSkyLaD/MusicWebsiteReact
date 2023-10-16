@@ -1,88 +1,98 @@
 import { useState, useEffect } from "react";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
+//cần optimize lại rất nhiều
 export default function PriceDisplay() {
-  const [price, setPrice] = useState({
-      nowPriceBTC: "",
-      todayChangeBTC: "",
-      picUrlBTC:'',
-      nowPriceETH: "",
-      todayChangeETH: "",
-      picUrlETH:'',
-      nowPriceDOGE: "",
-      todayChangeDOGE: "",
-      picUrlDOGE:''
-  });
+    function crypto(name,price,change){
+        this.name = name;
+        this.price = price;
+        this.change = change;
+    }
 
-  function fetchAPI() {
-    fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en')
-        .then((res) => res.json())
-        .then((data)=>{
-            console.log(data)
-            data.forEach((element) => {
-                if(element.id==='bitcoin'){
-                    setPrice((prev)=>{
-                        return({...prev,
-                            nowPriceBTC : element.current_price,
-                            todayChangeBTC :element.price_change_percentage_24h,
-                            picUrlBTC :element.image
-                        })
-                    })
-                }
-                if(element.id==='ethereum'){
-                    setPrice((prev)=>{
-                        return({...prev,
-                            nowPriceETH : element.current_price,
-                            todayChangeETH :element.price_change_percentage_24h,
-                            picUrlETH :element.image
-                        })
-                    })
-                }
-                if(element.id==='dogecoin'){
-                    setPrice((prev)=>{
-                        return({...prev,
-                            nowPriceDOGE : element.current_price,
-                            todayChangeDOGE :element.price_change_percentage_24h,
-                            picUrlDOGE :element.image
-                        })
-                    })
-                }
-            });
-        })
-        .catch((error) => {
-            console.error('Lỗi:', error);
-      });
-  }
+    let mornitoring = JSON.parse(localStorage.getItem('mornitoring'));
+    if(!mornitoring || mornitoring.length===0){
+        mornitoring = ['BTCUSDT','ETHUSDT', 'DOGEUSDT','EDUUSDT'];
+        localStorage.setItem('mornitoring',JSON.stringify(mornitoring));
+    }
 
-  useEffect(() => {
-    setInterval(fetchAPI, 60000);
-  }, []);
+    const [symbols,setSymbols] = useState(mornitoring);
+    const [price, setPrice] = useState([]);
+    const [newSymbol, setNewSymbol] = useState("");// xử lý form input
+    
+    //livetime API update
+    async function fetchAPI(){
+        try {
+                const dataArray = await Promise.all(symbols.map(async (symbol) => {
+                const response = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`);
+                const data = await response.json();
+                return new crypto(data.symbol, data.lastPrice, data.priceChangePercent);
+            }));
+        setPrice(dataArray);
+        } catch (error) {
+            setSymbols((prev)=>{
+                const temp = [...prev];
+                temp.pop();
+                return(temp);
+            })
+        }
+    }
 
-  return (
-    <div className="price-display">
-        <div className="coin-container" >
-            <img src={price.picUrlBTC} alt="" />
-            <div className="info">
-                <p>Bitcoin</p>
-                <p style={price.todayChangeBTC >= 0 ? {color : "green"} : {color :"red"}}>Price: {price.nowPriceBTC}</p>
-                <p style={price.todayChangeBTC >= 0 ? {color : "green"} : {color :"red"}}>Change: {price.todayChangeBTC}%</p>
+    useEffect(() => {
+        if(symbols.length>0){
+            const interval = setInterval(fetchAPI, 2000);
+            return () => clearInterval(interval);
+        }
+    })
+
+    useEffect(()=>{
+        localStorage.setItem('mornitoring',JSON.stringify(symbols));
+        console.log(symbols);
+    },[symbols])
+
+    function addCoin(event) {
+        event.preventDefault();
+        if (symbols.length<5) {
+            setSymbols((prevSymbols) => [...prevSymbols, newSymbol]);
+        }
+        setNewSymbol("");
+    }
+
+    function clearSymbols() {
+        setSymbols(()=>[]);
+        setPrice(()=>[]);
+    }
+
+    const dataHTML = price.map((value,index)=>{
+        return(
+            <div className="coin-container" key={index+1} style={value.change >=0 ? {backgroundColor:'green'} : {backgroundColor:'red'}} >
+                <div className="info">
+                    <p>{value.name.replace(/USDT/g, "/USDT")}</p>
+                    <p>Price: {value.price.replace(/\.?0+$/, '')}</p>
+                    <p>Change: {value.change}%</p>
+                </div>
+            </div>
+        )
+    })
+
+    return (
+        <div className="price-display">
+            <div className="add-and-clear">
+                <form onSubmit={addCoin}>
+                    <input
+                        className="token-input"
+                        type="text"
+                        placeholder="Add pair"
+                        value={newSymbol}
+                        onChange={(e)=>setNewSymbol(e.target.value)}
+                    />
+                </form>
+                <div className="clear" onClick={clearSymbols}>
+                    <FontAwesomeIcon icon={faTrash} />
+                </div>
+            </div>
+            <div className="coin-display">
+                {dataHTML}
             </div>
         </div>
-        <div className="coin-container">
-            <img src={price.picUrlETH} alt="" />
-            <div className="info">
-                <p>Etherium</p>
-                <p style={price.todayChangeETH >= 0 ? {color : "green"} : {color :"red"}}>Price: {price.nowPriceETH}</p>
-                <p style={price.todayChangeETH >= 0 ? {color : "green"} : {color :"red"}}>Change: {price.todayChangeETH}%</p>
-            </div>
-        </div>
-        <div className="coin-container">
-            <img src={price.picUrlDOGE} alt="" />
-            <div className="info">
-                <p>DogeCoin</p>
-                <p style={price.todayChangeDOGE >= 0 ? {color : "green"} : {color :"red"}}>Price: {price.nowPriceDOGE}</p>
-                <p style={price.todayChangeDOGE >= 0 ? {color : "green"} : {color :"red"}}>Change: {price.todayChangeDOGE}%</p>
-            </div>
-        </div>
-    </div>
-  );
+    );
 }

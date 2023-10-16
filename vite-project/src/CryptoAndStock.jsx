@@ -1,4 +1,4 @@
-import React from "react"
+
 import Clock from "./Clock"
 import PriceDisplay from "./PriceDisplay"
 

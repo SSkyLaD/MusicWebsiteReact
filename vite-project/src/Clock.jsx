@@ -12,7 +12,8 @@ export default function Clock(){
     })
 
     React.useEffect(()=>{
-        setInterval(getTime,1000);
+        const interval = setInterval(getTime,1000);
+        return () => clearInterval(interval)
     },)
 
     function normalize(input){

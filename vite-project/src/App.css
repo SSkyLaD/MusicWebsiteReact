@@ -352,6 +352,7 @@
 }
 
 .playlist-space .search #search-input{
+  height: 25px;
   border-radius: 20px;
   background-color: rgba(255, 246, 246, 0.76);
   width: 250px;
@@ -394,7 +395,7 @@
   display: flex;
   align-items: center;
   width: 1400px;
-  height: 150px;
+  height: 180px;
   background-color: rgba(245, 244, 244, 0.7);
   border-radius: 24px;
   padding: 0 25px;
@@ -456,32 +457,73 @@
   font-weight: 700;
 }
 
-.container-crypto-stock .price-display{
+.container-crypto-stock .coin-display{
   font-family: 'Roboto', sans-serif;
-  width: 70%;
+  width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
-  margin-left: 40px;
 }
 
-.container-crypto-stock .price-display .coin-container{
+.container-crypto-stock .coin-display .coin-container{
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 250px;
+  width: 180px;
   height: 100px;
-  background-color: rgb(255, 255, 255);
-  margin: 20px;
-  border-radius: 10px;
+  margin-top: 10px;
+  background-color: #F2F7FFFF;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
 }
 
-.container-crypto-stock .price-display .coin-container img{
-  width: 50px;
+.container-crypto-stock .coin-display .coin-container .info{
+  color: wheat;
 }
 
-.container-crypto-stock .price-display .coin-container .info p:first-child{
+.container-crypto-stock .coin-display .coin-container .info p:first-child{
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.container-crypto-stock .price-display{
+  flex-direction: column;
+  margin-left:100px;
+  width: 890px;
+}
+
+.container-crypto-stock .price-display .add-and-clear{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.container-crypto-stock .price-display .add-and-clear input{
+  height: 22px;
+  border-radius: 20px;
+  background-color: rgba(255, 246, 246, 0.76);
+  width: 250px;
+  box-shadow: 0 5px 5px rgba(59, 40, 40, 0.22);
+  padding-left: 10px;
+  border: transparent;
+}
+
+.container-crypto-stock .price-display .add-and-clear input:focus{
+  outline: none;
+}
+
+.container-crypto-stock .price-display .add-and-clear .clear{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.container-crypto-stock .price-display .add-and-clear .clear:hover{
+  cursor: pointer;
 }
