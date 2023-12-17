@@ -1,0 +1,112 @@
+.container-time-weather{
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 1400px;
+  height: 200px;
+  border-radius: 24px;
+  padding: 0 25px;
+  border: 2px solid wheat;
+  color:wheat;
+  background-image: url('/DarkSky.jpg');
+}
+
+.container-time-weather .clock{
+  font-family: 'Orbitron', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 320px;
+  height: 100px;
+  border-radius: 10px;
+}
+
+.container-time-weather .clock .date{
+  display: flex;
+  width: 275px;
+  justify-content: space-evenly;
+  margin-bottom: 5px;
+}
+
+.container-time-weather .clock .date div{
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.container-time-weather .clock .time-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.container-time-weather .clock .number-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  background-color: rgba(242, 247, 255, 0.4);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 5px;
+}
+
+.container-time-weather .clock .number-container .number{
+  font-size: 2rem;
+}
+
+.container-time-weather .clock .number-container .number-tag{
+  font-size: 0.8rem;
+}
+
+.container-time-weather .clock .time-container > p{
+  padding:5px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.container-time-weather .weather{
+  font-family: 'Roboto Slab', serif;
+  width: 950px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-left: 50px;
+}
+
+.container-time-weather .weather .weather-day{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.container-time-weather .weather .weather-day img{
+  width: 70px;
+}
+
+.container-time-weather .weather .weather-day div:first-child{
+  font-weight: bold;
+}
+
+.container-time-weather .weather button{
+  color: wheat;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(242, 247, 255, 0.4);
+}
+
+.container-time-weather .weather button:hover{
+  cursor: pointer;
+}

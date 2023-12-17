@@ -1,16 +1,16 @@
-import MusicPlayer from './MusicPlayer'
-import WeatherForecast from './WeatherForecast'
-import CryptoAndStock from './CryptoAndStock'
+import MusicPlayer from './MusicPlayer/MusicPlayer'
+import TimeAndWeather from './TimeAndWeather/TimeAndWeather'
+import PriceAlert from './PriceAlert/PriceAlert'
 import './App.css'
 
 export default function App(){
   return(
     <div className='all-container'>
       <div className='top-section'>
-        <CryptoAndStock/>
+        <TimeAndWeather/>
       </div>
       <div className='bottom-section'>
-        <WeatherForecast/>
+        <PriceAlert/>
         <MusicPlayer/>
       </div>
     </div>

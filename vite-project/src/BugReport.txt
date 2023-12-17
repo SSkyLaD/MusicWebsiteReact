@@ -1,0 +1,3 @@
+-17-10-2023
++ FetchData ở CryptoAndStock chưa được xử lý đúng
++ Hover nút option ở MusicSpace chưa xử lý đúng

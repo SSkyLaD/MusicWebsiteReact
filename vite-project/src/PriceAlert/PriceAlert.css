@@ -1,0 +1,27 @@
+.container-price-alert{
+    display: flex;
+    height: 600px;
+    width: 350px;
+    background-color: #1b1b1bf7;
+    border-radius: 24px;
+    margin-right: 50px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    overflow: auto;
+}
+
+.container-price-alert .price-component{
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-height: 90px;
+}
+
+.container-price-alert .price-component .data{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
